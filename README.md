@@ -25,7 +25,7 @@
 
 ## Архитектура системы
 
-![img_1.png](img_1.png)
+![img_3.png](img_3.png)
 
 Архитектура приложения состоит из трех сервисов: data-simulator, controller, rule-engine и инфраструктурных сервисов:
 mongodb, mongo-express, rabbitmq, grafana, prometheus, elasticsearch, logstash, kibana. Собственные сервисы написаны на
