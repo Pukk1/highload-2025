@@ -1,0 +1,7 @@
+scrape_configs:
+  - job_name: 'sample_monitoring'
+    scrape_interval: 15s
+    scrape_timeout: 15s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['iot-controller:9090', 'data-simulator:9091', 'rule-engine:9092']

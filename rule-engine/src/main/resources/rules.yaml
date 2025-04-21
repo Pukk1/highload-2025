@@ -1,0 +1,8 @@
+rules:
+  instant:
+    aMoreThanArgument: 0
+    deviceIdMoreThanArgument: 100
+  lasting:
+    aMoreThanArgumentCountTimes:
+      argument: 0
+      count: 10

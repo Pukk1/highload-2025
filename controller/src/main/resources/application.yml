@@ -1,0 +1,39 @@
+server:
+  port: ${CONTROLLER_SERVICE_PORT:9090}
+
+spring:
+  application:
+    name: controller
+
+  data:
+    mongodb:
+      host: ${SPRING_MONGODB_HOST:localhost}
+      port: ${SPRING_MONGODB_PORT:27017}
+      database: ${SPRING_MONGODB_DATABASE:admin}
+      username: ${SPRING_MONGODB_USERNAME:admin}
+      password: ${SPRING_MONGODB_PASSWORD:admin}
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    username: ${SPRING_RABBITMQ_USERNAME:admin}
+    password: ${SPRING_RABBITMQ_PASSWORD:admin}
+    queue-name: ${SPRING_RABBITMQ_QUEUE_NAME:devicePackages}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+
+logging:
+  file:
+    name: application.log
+  level:
+    root: info

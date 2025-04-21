@@ -1,0 +1,163 @@
+version: '3.9'
+
+services:
+  data-simulator:
+    build:
+      context: data-simulator
+      dockerfile: Dockerfile
+    ports:
+      - "9091:9091"
+    environment:
+      - IOT_CONTROLLER_URL=http://iot-controller:9090
+    depends_on:
+      - iot-controller
+
+  iot-controller:
+    build:
+      context: controller
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    environment:
+      - SPRING_MONGODB_HOST=mongo-controller
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - mongo-controller
+      - rabbitmq
+
+  rule-engine:
+    build:
+      context: rule-engine
+      dockerfile: Dockerfile
+    ports:
+      - "9092:9092"
+    environment:
+      - SPRING_MONGODB_HOST=mongo-rule-engine
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_MONGODB_PORT=27017
+    depends_on:
+      - mongo-controller
+      - rabbitmq
+      - logstash
+
+  mongo-controller:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - mongo-controller-data:/data/db
+
+  mongo-rule-engine:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - mongo-rule-engine-data:/data/db
+
+  mongo-express-controller:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - "9096:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
+      - ME_CONFIG_MONGODB_SERVER=mongo-controller
+
+  mongo-express-rule-engine:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - "9097:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
+      - ME_CONFIG_MONGODB_SERVER=mongo-controller
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
+  grafana:
+    build: './config/grafana'
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9095:9090
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - iot-controller
+      - data-simulator
+
+  elasticsearch:
+    image: elasticsearch:7.16.1
+    volumes:
+      - ./configs/elasticsearch/config.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./docker_volumes/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTIC_USERNAME: "elastic"
+      ELASTIC_PASSWORD: "MyPw123"
+      discovery.type: single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  logstash:
+    image: logstash:7.16.1
+    volumes:
+      - ./configs/logstash/config.yaml:/usr/share/logstash/config/logstash.yml:ro
+      - ./configs/logstash/pipelines.yaml:/usr/share/logstash/config/pipelines.yml:ro
+      - ./configs/logstash/pipelines:/usr/share/logstash/config/pipelines:ro
+    environment:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+    ports:
+      - "5044:5044"
+      - "5000:5000"
+      - "9600:9600"
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: kibana:7.16.1
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./configs/kibana/config.yaml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+
+#  beats:
+#    image: elastic/filebeat:7.16.1
+#    volumes:
+#      - ./configs/filebeat/config.yaml:/usr/share/filebeat/filebeat.yml:ro
+#      - ./rule_engine_app/:/rule_engine_app/:ro
+#    depends_on:
+#      - elasticsearch
+
+volumes:
+  mongo-controller-data:
+    driver: local
+  mongo-rule-engine-data:
+    driver: local

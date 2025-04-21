@@ -1,0 +1,35 @@
+server:
+  port: ${CONTROLLER_SERVICE_PORT:9091}
+
+spring:
+  application:
+    name: data-simulator
+
+iot-controller:
+  url: ${IOT_CONTROLLER_URL:http://localhost:9090}
+
+data:
+  simulation:
+    device-number: ${DATA_SIMULATION_DEVICE_NUMBER:10}
+    message-per-second: ${DATA_SIMULATION_MESSAGE_PER_SECOND:1}
+    available-device-properties-names: ${DATA_SIMULATION_AVAILABLE_DEVICE_PROPERTIES_NAMES:A,B,C}
+    possible-device-properties-values: ${DATA_SIMULATION_POSSIBLE_DEVICE_PROPERTIES_VALUES:-1,0,1,[D],{"A":"1"}}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+
+logging:
+  file:
+    name: application.log
+  level:
+    root: info

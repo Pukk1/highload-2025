@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "a5aa6958-e921-44c4-a5fc-d3986d7eb71c",
+		"name": "iot-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18093937"
+	},
+	"item": [
+		{
+			"name": "iot-controller",
+			"item": [
+				{
+					"name": "executeIotPackage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"A\": \"12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localHost}}/api/v1/iot/device/test-decice/data",
+							"host": [
+								"{{localHost}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"iot",
+								"device",
+								"test-decice",
+								"data"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localHost",
+			"value": "http://localhost:9090",
+			"type": "string"
+		}
+	]
+}
