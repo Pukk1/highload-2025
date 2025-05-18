@@ -33,7 +33,6 @@ class SimulationServiceImplTest {
         when(properties.getDeviceNumber()).thenReturn(2);
         when(properties.getMessagePerSecond()).thenReturn(1);
 
-
         simulationService = new SimulationServiceImpl(iotControllerApi, properties, dataBodyGeneratorUtil);
     }
 

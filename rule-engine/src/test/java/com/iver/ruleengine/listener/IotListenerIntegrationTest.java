@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IotListenerIntegrationTest extends AbstractIntegrationTest {
 
-
     @Autowired
     IotListener iotListener;
 
@@ -19,7 +18,7 @@ class IotListenerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void testValid_validValue_shouldWorkRight() {
-        
+
         var validMessage = "{\"id\":\"6829fb25ed6cbb29fc12efc2\",\"deviceId\":\"123\",\"data\":{\"temperature\":25}}";
         iotListener.listen(validMessage);
 

@@ -51,21 +51,18 @@ class IotServiceImplTest {
     void processDeviceData_notJsonObject_throwsException() {
         String invalidJson = "[]";
 
-        CustomException exception = assertThrows(CustomException.class, () ->
-                iotService.processDeviceData(deviceId, invalidJson)
-        );
+        CustomException exception = assertThrows(CustomException.class,
+                () -> iotService.processDeviceData(deviceId, invalidJson));
 
         assertEquals("Custom exception: input json is not json object", exception.getMessage());
     }
-
 
     @Test
     void processDeviceData_nullJson_throwsException() {
         String invalidJson = "null";
 
-        CustomException exception = assertThrows(CustomException.class, () ->
-                iotService.processDeviceData(deviceId, invalidJson)
-        );
+        CustomException exception = assertThrows(CustomException.class,
+                () -> iotService.processDeviceData(deviceId, invalidJson));
 
         assertEquals("Custom exception: input json is null", exception.getMessage());
     }

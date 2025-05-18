@@ -49,11 +49,8 @@ class RuleServiceImplTest {
 
         // Assert
         verify(ruleMock).checkRule(devicePackage, data);
-        verify(ruleChecksRepository).save(argThat(ruleCheck ->
-                ruleCheck.getDeviceId().equals(42) &&
-                        ruleCheck.getRuleName().equals("TestRule") &&
-                        ruleCheck.getResult())
-        );
+        verify(ruleChecksRepository).save(argThat(ruleCheck -> ruleCheck.getDeviceId().equals(42)
+                && ruleCheck.getRuleName().equals("TestRule") && ruleCheck.getResult()));
         verify(counter).increment();
     }
 
@@ -67,11 +64,8 @@ class RuleServiceImplTest {
         ruleService.checkAllRulesForMessage(devicePackage, data);
 
         verify(ruleMock).checkRule(devicePackage, data);
-        verify(ruleChecksRepository).save(argThat(ruleCheck ->
-                ruleCheck.getDeviceId().equals(99) &&
-                        ruleCheck.getRuleName().equals("TestRule") &&
-                        !ruleCheck.getResult())
-        );
+        verify(ruleChecksRepository).save(argThat(ruleCheck -> ruleCheck.getDeviceId().equals(99)
+                && ruleCheck.getRuleName().equals("TestRule") && !ruleCheck.getResult()));
         verify(counter, never()).increment();
     }
 }

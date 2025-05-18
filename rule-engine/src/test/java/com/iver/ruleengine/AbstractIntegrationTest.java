@@ -38,8 +38,7 @@ public class AbstractIntegrationTest {
         factory.setUsername(rabbitMQContainer.getAdminUsername());
         factory.setPassword(rabbitMQContainer.getAdminPassword());
 
-        try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
+        try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
             channel.queueDeclare("devicePackages", true, false, false, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
