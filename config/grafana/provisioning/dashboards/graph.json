@@ -37,16 +37,51 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 3,
+  "id": 2,
   "links": [],
   "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 130,
+      "options": {
+        "alertInstanceLabelFilter": "",
+        "alertName": "",
+        "dashboardAlerts": false,
+        "groupBy": [],
+        "groupMode": "default",
+        "maxItems": 20,
+        "showInactiveAlerts": false,
+        "sortOrder": 1,
+        "stateFilter": {
+          "error": true,
+          "firing": true,
+          "noData": false,
+          "normal": false,
+          "pending": true,
+          "recovering": true
+        },
+        "viewMode": "list"
+      },
+      "pluginVersion": "12.0.0",
+      "title": "AlertList",
+      "type": "alertlist"
+    },
     {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 125,
       "panels": [],
@@ -76,8 +111,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -93,7 +127,7 @@
         "h": 3,
         "w": 6,
         "x": 0,
-        "y": 1
+        "y": 9
       },
       "id": 63,
       "maxDataPoints": 100,
@@ -114,7 +148,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -155,8 +189,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -172,7 +205,7 @@
         "h": 3,
         "w": 12,
         "x": 6,
-        "y": 1
+        "y": 9
       },
       "id": 92,
       "maxDataPoints": 100,
@@ -193,7 +226,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -237,8 +270,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgba(50, 172, 45, 0.97)",
-                "value": null
+                "color": "rgba(50, 172, 45, 0.97)"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -258,7 +290,7 @@
         "h": 3,
         "w": 6,
         "x": 18,
-        "y": 1
+        "y": 9
       },
       "id": 65,
       "maxDataPoints": 100,
@@ -279,7 +311,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -303,7 +335,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 12
       },
       "id": 127,
       "panels": [],
@@ -358,8 +390,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -374,7 +405,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 13
       },
       "id": 129,
       "options": {
@@ -385,11 +416,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "disableTextWrap": false,
@@ -455,8 +487,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -472,7 +503,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 22
       },
       "id": 24,
       "options": {
@@ -487,11 +518,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -540,7 +572,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 30
       },
       "id": 128,
       "panels": [],
@@ -614,7 +646,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 23
+        "y": 31
       },
       "id": 106,
       "options": {
@@ -629,11 +661,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -743,7 +776,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 23
+        "y": 31
       },
       "id": 93,
       "options": {
@@ -758,11 +791,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -858,7 +892,7 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 23
+        "y": 31
       },
       "id": 32,
       "options": {
@@ -873,11 +907,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1089,7 +1124,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 23
+        "y": 31
       },
       "id": 124,
       "options": {
@@ -1104,11 +1139,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1128,7 +1164,7 @@
   ],
   "preload": false,
   "refresh": "5s",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": [
@@ -1153,8 +1189,8 @@
       },
       {
         "current": {
-          "text": "data-simulator:9091",
-          "value": "data-simulator:9091"
+          "text": "rule-engine:9092",
+          "value": "rule-engine:9092"
         },
         "datasource": "Prometheus",
         "definition": "",
@@ -1218,8 +1254,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "JVM (Micrometer) Copy",
-  "uid": "aeah5rawnkrnkb",
-  "version": 1,
-  "weekStart": ""
+  "title": "JVM (Micrometer) Copy Copy",
+  "uid": "3a211f2e-e25f-45ec-8640-186ae16c332f",
+  "version": 1
 }
