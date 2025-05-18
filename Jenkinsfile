@@ -40,7 +40,7 @@ pipeline {
                     set -e
                     apt-get update > /dev/null
                     apt-get install -y docker-compose > /dev/null
-                    docker-compose build -d
+                    docker-compose build --no-cache
                 '''
                 stash name:'workspace', includes:'**'
             }
@@ -60,11 +60,20 @@ pipeline {
                     set -e
                     apt-get update > /dev/null
                     apt-get install -y docker-compose > /dev/null
-                    docker-compose build -d
+                    docker-compose build --no-cache
                     docker run -d --rm itmo-highload-2025_309681_rule-engine mvn clean test
                     docker run -d --rm itmo-highload-2025_309681_data-simulator mvn clean test
                     docker run -d --rm itmo-highload-2025_309681_iot-controller mvn clean test
+                    docker-compose up tsung
                 '''
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '/tsung/log/1/**/*', fingerprint: true
+                    archiveArtifacts artifacts: '/tsung/log/2/**/*', fingerprint: true
+                    archiveArtifacts artifacts: '/tsung/log/3/**/*', fingerprint: true
+                    sh 'docker-compose down -v || true'
+                }
             }
         }
     }

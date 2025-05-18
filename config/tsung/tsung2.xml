@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd">
+
+<tsung loglevel="notice" version="1.0">
+    <clients>
+        <client host="localhost" use_controller_vm="true" maxusers="500"/>
+    </clients>
+
+    <servers>
+        <server host="iot-controller" port="9090" type="tcp"/>
+    </servers>
+
+    <load>
+        <!-- Сценарий 2: мало пользователей, высокая частота -->
+        <arrivalphase phase="2" duration="2" unit="minute">
+            <users interarrival="5" unit="second"/>
+        </arrivalphase>
+    </load>
+
+    <sessions>
+        <session name="fast" probability="100" type="ts_http">
+            <thinktime value="1" random="true"/>
+            <request>
+                <http url="/api/v1/iot/device/1/data" method="POST" content_type="application/json"/>
+            </request>
+            <request subst="true">
+                <http url="/api/v1/iot/device/1/data"
+                      method="POST"
+                      version="1.1"
+                      content_type="application/json"
+                      contents_from_file="/tsung/config/data.json"/>
+            </request>
+        </session>
+    </sessions>
+</tsung>
