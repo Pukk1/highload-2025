@@ -105,6 +105,7 @@ services:
     ports:
       - 9095:9090
     volumes:
+      - ./config/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - iot-controller

@@ -5,3 +5,6 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['iot-controller:9090', 'data-simulator:9091', 'rule-engine:9092']
+
+rule_files:
+  - "alert.rules.yml"

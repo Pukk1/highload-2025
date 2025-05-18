@@ -9,7 +9,7 @@ FROM maven:3.9.8 AS maven
 ENV M2_HOME=$HOME/maven3
 
 COPY  . /
-RUN mvn clean formatter:validate install
+RUN mvn clean formatter:format formatter:validate install
 RUN mv ./target/rule-engine-0.0.1-SNAPSHOT.jar app.jar
 
 # Копируем файл jar из локальной сборки в контейнер

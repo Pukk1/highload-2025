@@ -1,0 +1,32 @@
+groups:
+  - name: system-alerts
+    rules:
+      # CPU > 80%
+      - alert: SpringBootHighCpu
+        expr: process_cpu_usage > 0.8
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокая загрузка CPU в Spring Boot ({{ $labels.instance }})"
+          description: "Приложение использует более 80% CPU в течение 30 секунд."
+
+      # Heap memory > 75%
+      - alert: SpringBootHighHeapUsage
+        expr: (jvm_memory_used_bytes{area="heap"} / jvm_memory_max_bytes{area="heap"}) > 0.75
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокое использование heap памяти в Spring Boot ({{ $labels.instance }})"
+          description: "Heap занят > 75% в течение 30 секунд."
+
+      # сервис не отвечает > 30с
+      - alert: ServiceDown
+        expr: up{job="sample_monitoring"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Сервис {{ $labels.instance }} недоступен"
+          description: "Сервис не отвечает более 30 секунд."
