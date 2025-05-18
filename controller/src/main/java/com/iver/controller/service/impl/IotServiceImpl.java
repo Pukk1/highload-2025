@@ -1,5 +1,6 @@
 package com.iver.controller.service.impl;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iver.controller.enums.RabbitMqMetaMessageMetaKeys;
@@ -41,14 +42,13 @@ public class IotServiceImpl implements IotService {
     }
 
     private JsonObject validateDeviceData(String input) {
-        JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
-
-        if (jsonObject.isJsonNull()) {
+        JsonElement jsonElement = JsonParser.parseString(input);
+        if (jsonElement.isJsonNull()) {
             throw new CustomException("input json is null");
         }
-        if (!jsonObject.isJsonObject()) {
+        if (!jsonElement.isJsonObject()) {
             throw new CustomException("input json is not json object");
         }
-        return jsonObject;
+        return jsonElement.getAsJsonObject();
     }
 }
