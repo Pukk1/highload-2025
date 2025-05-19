@@ -12,14 +12,14 @@
 
     <load>
         <!-- Сценарий 2: мало пользователей, высокая частота -->
-        <arrivalphase phase="2" duration="2" unit="minute">
-            <users interarrival="5" unit="second"/>
+        <arrivalphase phase="2" duration="30" unit="second">
+            <users interarrival="1" unit="second"/>
         </arrivalphase>
     </load>
 
     <sessions>
         <session name="fast" probability="100" type="ts_http">
-            <thinktime value="1" random="true"/>
+            <thinktime value="0.1"/>
             <request>
                 <http url="/api/v1/iot/device/1/data" method="POST" content_type="application/json"/>
             </request>
