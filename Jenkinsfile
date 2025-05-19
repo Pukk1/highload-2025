@@ -40,7 +40,17 @@ pipeline {
                     set -e
                     apt-get update > /dev/null
                     apt-get install -y docker-compose > /dev/null
+
+                    cd ./controller
                     mvn clean formatter:format formatter:validate install
+                    cd ..
+                    cd ./data-simulator
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
+                    cd ./rula-engine
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
+
                     docker-compose build --no-cache
                 '''
                 stash name:'workspace', includes:'**'
