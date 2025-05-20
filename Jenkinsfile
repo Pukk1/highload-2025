@@ -29,18 +29,30 @@ pipeline {
         stage('Build artifacts & tests') {
             agent {
                 docker {
-                    image 'python:3.10-slim'
+                    image 'openjdk:21-jdk'
                     reuseNode true
                     args '-u root'
                 }
+            }
+            environment {
+                MAVEN_VERSION = '3.9.9'
             }
             steps {
                 unstash 'workspace'
 
                 sh '''
-                    set -e
-                    apt-get update > /dev/null
-                    apt-get install -y maven > /dev/null
+                    apt-get remove -y maven || true
+
+                    apt-get update
+                    apt-get install -y wget tar
+
+                    wget https://downloads.apache.org/maven/maven-3/${env.MAVEN_VERSION}/binaries/apache-maven-${env.MAVEN_VERSION}-bin.tar.gz
+                    tar -xzf apache-maven-${env.MAVEN_VERSION}-bin.tar.gz
+                    mv apache-maven-${env.MAVEN_VERSION} /opt/maven
+                    ln -s /opt/maven/apache-maven-${env.MAVEN_VERSION} /opt/maven/latest
+
+                    echo 'export PATH=/opt/maven/latest/bin:$PATH' >> ~/.bashrc
+                    source ~/.bashrc
 
                     cd ./controller
                     mvn clean formatter:format formatter:validate install
