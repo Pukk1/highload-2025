@@ -39,7 +39,6 @@ pipeline {
 
                 sh '''
                     set -e
-                    apt-get update > /dev/null
 
                     cd ./controller
                     mvn clean formatter:format formatter:validate install
