@@ -67,8 +67,8 @@ pipeline {
                 unstash 'workspace'
                 sh '''
                     set -e
-                    apt-get update > /dev/null
-                    apt-get install -y docker-compose > /dev/null
+                    apt-get update
+                    apt-get install -y docker-compose
 
                     docker-compose build --no-cache
                 '''
@@ -88,8 +88,8 @@ pipeline {
                 unstash 'workspace'
                 sh '''
                     set -e
-                    apt-get update > /dev/null
-                    apt-get install -y docker-compose > /dev/null
+                    apt-get update
+                    apt-get install -y docker-compose
                     docker-compose build --no-cache
                     docker-compose up tsung
                 '''
