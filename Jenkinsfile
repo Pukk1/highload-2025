@@ -46,7 +46,7 @@ pipeline {
                     cd ./data-simulator
                     mvn clean formatter:format formatter:validate install
                     cd ..
-                    cd ./rula-engine
+                    cd ./rule-engine
                     mvn clean formatter:format formatter:validate install
                     cd ..
                 '''
