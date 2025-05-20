@@ -26,6 +26,37 @@ pipeline {
             }
         }
 
+        stage('Build artifacts') {
+            agent {
+                docker {
+                    image 'maven:3.9.4-eclipse-temurin-17-alpine'
+                    reuseNode true
+                    args '-u root'
+                }
+            }
+            steps {
+                unstash 'workspace'
+
+                sh '''
+                    set -e
+                    apt-get update > /dev/null
+                    apt-get install -y docker-compose > /dev/null
+
+                    cd ./controller
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
+                    cd ./data-simulator
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
+                    cd ./rula-engine
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
+                '''
+
+                stash name:'workspace', includes:'**'
+            }
+        }
+
         stage('Build docker images') {
             agent {
                 docker {
@@ -38,9 +69,7 @@ pipeline {
                 unstash 'workspace'
                 sh '''
                     set -e
-                    apt-get update > /dev/null
-                    apt-get install -y docker-compose > /dev/null
-                    mvn clean formatter:format formatter:validate install
+
                     docker-compose build --no-cache
                 '''
                 stash name:'workspace', includes:'**'
