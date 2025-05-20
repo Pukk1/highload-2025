@@ -31,7 +31,7 @@ class IotControllerIntegrationTest extends AbstractIntegrationTest {
         var allSavedPackages = devicePackageRepository.findAll();
 
         assertEquals(allSavedPackages.size(), 1);
-        assertEquals(allSavedPackages.getFirst().getDeviceId(), deviceId);
-        assertEquals(allSavedPackages.getFirst().getDeviceData(), validJson);
+        assertEquals(allSavedPackages.stream().findFirst().get().getDeviceId(), deviceId);
+        assertEquals(allSavedPackages.stream().findFirst().get().getDeviceData(), validJson);
     }
 }

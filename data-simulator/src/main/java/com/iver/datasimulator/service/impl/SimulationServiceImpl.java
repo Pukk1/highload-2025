@@ -39,7 +39,7 @@ public class SimulationServiceImpl implements SimulationService {
         var newMessagePerSecond = patchConfigInput.getMessagePerSecond();
         var newDeviceNumber = patchConfigInput.getDeviceNumber();
         if (((ThreadPoolExecutor) executor).getPoolSize() != newDeviceNumber) {
-            executor.close();
+            executor.shutdown();
             executor = Executors.newScheduledThreadPool(newDeviceNumber);
         }
         for (int i = 0; i < newDeviceNumber; i++) {

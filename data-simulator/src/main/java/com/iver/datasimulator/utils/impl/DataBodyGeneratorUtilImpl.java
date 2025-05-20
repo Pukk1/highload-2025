@@ -44,6 +44,6 @@ public class DataBodyGeneratorUtilImpl implements DataBodyGeneratorUtil {
 
     private String getRandomPropertyValue() {
         int elementNumber = new Random().nextInt(0, possibleDevicePropertiesValues.size());
-        return possibleDevicePropertiesValues.stream().skip(elementNumber).toList().getFirst();
+        return possibleDevicePropertiesValues.stream().skip(elementNumber).toList().stream().findFirst().get();
     }
 }
