@@ -29,7 +29,7 @@ pipeline {
         stage('Build artifacts & tests') {
             agent {
                 docker {
-                    image 'maven:3.9.4-eclipse-temurin-17-alpine'
+                    image 'openjdk:21-jdk'
                     reuseNode true
                     args '-u root'
                 }
@@ -39,6 +39,8 @@ pipeline {
 
                 sh '''
                     set -e
+
+                    apt-get install -y maven
 
                     cd ./controller
                     mvn clean formatter:format formatter:validate install
@@ -58,7 +60,7 @@ pipeline {
         stage('Build docker images') {
             agent {
                 docker {
-                    image 'python:3.10-slim'
+                    image 'openjdk:21-jdk'
                     reuseNode true
                     args '-u root'
                 }
@@ -79,7 +81,7 @@ pipeline {
         stage('Run tsung') {
             agent {
                 docker {
-                    image 'python:3.10-slim'
+                    image 'openjdk:21-jdk'
                     reuseNode true
                     args '-u root'
                 }
@@ -90,7 +92,6 @@ pipeline {
                     set -e
                     apt-get update
                     apt-get install -y docker-compose
-                    docker-compose build --no-cache
                     docker-compose up tsung
                 '''
             }
