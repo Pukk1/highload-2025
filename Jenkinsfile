@@ -29,7 +29,7 @@ pipeline {
         stage('Build artifacts & tests') {
             agent {
                 docker {
-                    image 'openjdk:21-jdk'
+                    image 'maven:3.9.9-amazoncorretto-21'
                     reuseNode true
                     args '-u root'
                 }
@@ -39,8 +39,6 @@ pipeline {
 
                 sh '''
                     set -e
-
-                    apt-get install -y maven
 
                     cd ./controller
                     mvn clean formatter:format formatter:validate install
