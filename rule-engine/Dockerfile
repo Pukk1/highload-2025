@@ -13,7 +13,7 @@ ENV M2_HOME=$HOME/maven3
 #RUN mv ./target/rule-engine-0.0.1-SNAPSHOT.jar app.jar
 
 # Копируем файл jar из локальной сборки в контейнер
-COPY target/controller-0.0.1-SNAPSHOT.jar app.jar
+COPY target/rule-engine-0.0.1-SNAPSHOT.jar app.jar
 
 # Указываем команду запуска приложения
 CMD ["java", "-jar", "app.jar"]
