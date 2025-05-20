@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Build artifacts') {
+        stage('Build artifacts & tests') {
             agent {
                 docker {
                     image 'maven:3.9.4-eclipse-temurin-17-alpine'
@@ -76,7 +76,7 @@ pipeline {
             }
         }
 
-        stage('Run docker tests') {
+        stage('Run tsung') {
             agent {
                 docker {
                     image 'python:3.10-slim'
@@ -91,9 +91,6 @@ pipeline {
                     apt-get update > /dev/null
                     apt-get install -y docker-compose > /dev/null
                     docker-compose build --no-cache
-                    docker run -d --rm itmo-highload-2025_309681_rule-engine mvn clean test
-                    docker run -d --rm itmo-highload-2025_309681_data-simulator mvn clean test
-                    docker run -d --rm itmo-highload-2025_309681_iot-controller mvn clean test
                     docker-compose up tsung
                 '''
             }
