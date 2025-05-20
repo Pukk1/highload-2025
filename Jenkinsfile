@@ -29,7 +29,7 @@ pipeline {
         stage('Build artifacts & tests') {
             agent {
                 docker {
-                    image 'maven:3.9.9-amazoncorretto-21'
+                    image 'python:3.10-slim'
                     reuseNode true
                     args '-u root'
                 }
