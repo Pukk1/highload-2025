@@ -52,8 +52,6 @@ pipeline {
                     mvn clean formatter:format formatter:validate install
                     cd ..
                 '''
-
-                stash name:'workspace', includes:'**'
             }
         }
 
@@ -69,12 +67,22 @@ pipeline {
                 unstash 'workspace'
                 sh '''
                     set -e
-                    apt-get update
+                    apt-get update > /dev/null
+                    apt-get install -y maven > /dev/null
                     apt-get install -y docker-compose
+
+                    cd ./controller
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
+                    cd ./data-simulator
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
+                    cd ./rule-engine
+                    mvn clean formatter:format formatter:validate install
+                    cd ..
 
                     docker-compose build --no-cache
                 '''
-                stash name:'workspace', includes:'**'
             }
         }
 
