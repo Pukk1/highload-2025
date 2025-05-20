@@ -39,15 +39,10 @@ pipeline {
 
                 sh '''
                     set -e
+                    apt-get update > /dev/null
+                    apt-get install -y maven > /dev/null
 
-                    cd ./controller
-                    mvn clean formatter:format formatter:validate install
-                    cd ..
-                    cd ./data-simulator
-                    mvn clean formatter:format formatter:validate install
-                    cd ..
-                    cd ./rule-engine
-                    mvn clean formatter:format formatter:validate install
+                    mvn clean install
                     cd ..
                 '''
 
