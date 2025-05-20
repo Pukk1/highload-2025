@@ -40,7 +40,6 @@ pipeline {
                 sh '''
                     set -e
                     apt-get update > /dev/null
-                    apt-get install -y docker-compose > /dev/null
 
                     cd ./controller
                     mvn clean formatter:format formatter:validate install
@@ -69,6 +68,8 @@ pipeline {
                 unstash 'workspace'
                 sh '''
                     set -e
+                    apt-get update > /dev/null
+                    apt-get install -y docker-compose > /dev/null
 
                     docker-compose build --no-cache
                 '''
