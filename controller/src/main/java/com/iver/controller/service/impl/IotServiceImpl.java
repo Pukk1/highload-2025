@@ -8,8 +8,10 @@ import com.iver.controller.exception.CustomException;
 import com.iver.controller.model.DevicePackage;
 import com.iver.controller.repository.DevicePackageRepository;
 import com.iver.controller.service.IotService;
+import com.iver.controller.service.provider.DevicePackageProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,19 +20,15 @@ public class IotServiceImpl implements IotService {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private final DevicePackageRepository devicePackageRepository;
+    private final DevicePackageProvider devicePackageProvider;
 
     @Override
     public void processDeviceData(String deviceId, String deviceData) {
         var deviceDataJson = validateDeviceData(deviceData);
 
-        var model = save(new DevicePackage(deviceId, deviceDataJson.toString()));
+        var model = devicePackageProvider.saveDevicePackage(new DevicePackage(deviceId, deviceDataJson.toString()));
 
         send(deviceDataJson, model);
-    }
-
-    private DevicePackage save(DevicePackage newDevicePackage) {
-        return devicePackageRepository.save(newDevicePackage);
     }
 
     private void send(JsonObject data, DevicePackage model) {

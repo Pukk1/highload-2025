@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: controller
+  cache:
+    type: redis
 
   data:
     mongodb:
@@ -12,6 +14,9 @@ spring:
       database: ${SPRING_MONGODB_DATABASE:admin}
       username: ${SPRING_MONGODB_USERNAME:admin}
       password: ${SPRING_MONGODB_PASSWORD:admin}
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
 
   rabbitmq:
     host: ${SPRING_RABBITMQ_HOST:localhost}
