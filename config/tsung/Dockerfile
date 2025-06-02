@@ -32,7 +32,8 @@ RUN apt-get update && \
 
 RUN mkdir -p /root/.tsung/log
 
-CMD bash -c "tsung -f /tsung/config/tsung1.xml -l /tsung/log/1 start && \
+CMD bash -c "tsung -f /tsung/config/warm.xml -l /tsung/log/0 start && \
+             tsung -f /tsung/config/tsung1.xml -l /tsung/log/1 start && \
              cd /tsung/log/1/\$(ls -1t /tsung/log/1 | head -n 1) && \
              /usr/local/lib/tsung/bin/tsung_stats.pl && \
              tsung -f /tsung/config/tsung2.xml -l /tsung/log/2 start && \
@@ -40,6 +41,10 @@ CMD bash -c "tsung -f /tsung/config/tsung1.xml -l /tsung/log/1 start && \
              /usr/local/lib/tsung/bin/tsung_stats.pl && \
              tsung -f /tsung/config/tsung3.xml -l /tsung/log/3 start && \
              cd /tsung/log/3/\$(ls -1t /tsung/log/3 | head -n 1) && \
-             /usr/local/lib/tsung/bin/tsung_stats.pl"
+             /usr/local/lib/tsung/bin/tsung_stats.pl && \
+             tsung -f /tsung/config/stress.xml -l /tsung/log/4 start && \
+             cd /tsung/log/4/\$(ls -1t /tsung/log/4 | head -n 1) && \
+             /usr/local/lib/tsung/bin/tsung_stats.pl && \
+             "
 
 WORKDIR /tsung

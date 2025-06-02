@@ -12,7 +12,22 @@ services:
     depends_on:
       - iot-controller
 
+  nginx:
+    image: nginx:latest
+    ports:
+      - "9777:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - iot-controller
+      - iot-controller-2
+
   iot-controller:
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1g
     build:
       context: controller
       dockerfile: Dockerfile
@@ -25,7 +40,30 @@ services:
       - mongo-controller
       - rabbitmq
 
+  iot-controller-2:
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1g
+    build:
+      context: controller
+      dockerfile: Dockerfile
+    ports:
+      - "9091:9090"
+    environment:
+      - SPRING_MONGODB_HOST=mongo-controller
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - mongo-controller
+      - rabbitmq
+
   rule-engine:
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1g
     build:
       context: rule-engine
       dockerfile: Dockerfile
@@ -159,6 +197,10 @@ services:
     depends_on:
       - iot-controller
       - rule-engine
+    entrypoint: >
+      sh -c "tsung -f /tsung/config/stress.xml -l /tsung/log/4 start && \
+             cd /tsung/log/4/\$(ls -1t /tsung/log/4 | head -n 1) && \
+             /usr/local/lib/tsung/bin/tsung_stats.pl"
 
 volumes:
   mongo-controller-data:

@@ -11,9 +11,9 @@
     </servers>
 
     <load>
-        <!-- Сценарий 1: много пользователей, низкая частота -->
-        <arrivalphase phase="1" duration="60" unit="second">
-            <users interarrival="0.05" unit="second"/>
+        <!-- Сценарий 0: прогрев -->
+        <arrivalphase phase="0" duration="20" unit="second">
+            <users interarrival="0.1" unit="second"/>
         </arrivalphase>
     </load>
 
