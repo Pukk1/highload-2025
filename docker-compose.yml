@@ -38,7 +38,6 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_REDIS_HOST=redis
     depends_on:
-      - mongo-controller
       - rabbitmq
 
   iot-controller-2:
@@ -57,7 +56,6 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_REDIS_HOST=redis
     depends_on:
-      - mongo-controller
       - rabbitmq
 
   rule-engine:
@@ -76,19 +74,77 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_MONGODB_PORT=27017
     depends_on:
-      - mongo-controller
       - rabbitmq
       - logstash
 
-  mongo-controller:
+  configsvr1:
     image: mongo:latest
+    command: mongod --configsvr --replSet configReplSet --port 27017
+    volumes:
+      - configsvr1:/data/db
+    networks:
+      - mongo-net
+
+  configsvr2:
+    image: mongo:latest
+    command: mongod --configsvr --replSet configReplSet --port 27017
+    volumes:
+      - configsvr2:/data/db
+    networks:
+      - mongo-net
+
+  configsvr3:
+    image: mongo:latest
+    command: mongod --configsvr --replSet configReplSet --port 27017
+    volumes:
+      - configsvr3:/data/db
+    networks:
+      - mongo-net
+
+  shard1-1:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard1ReplSet --port 27017
+    volumes:
+      - shard1-1:/data/db
+    networks:
+      - mongo-net
+
+  shard1-2:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard1ReplSet --port 27017
+    volumes:
+      - shard1-2:/data/db
+    networks:
+      - mongo-net
+
+  shard1-3:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard1ReplSet --port 27017
+    volumes:
+      - shard1-3:/data/db
+    networks:
+      - mongo-net
+
+  mongos:
+    image: mongo:latest
+    depends_on:
+      - configsvr1
+      - configsvr2
+      - configsvr3
+      - shard1-1
+    command: > 
+      bash -c "
+      sleep 10 &&
+      mongos --configdb configReplSet/configsvr1:27017,configsvr2:27017,configsvr3:27017 --bind_ip_all"
     ports:
-      - "27017:27017"
+      - "27033:27017"
+    volumes:
+      - ./mongos:/docker-entrypoint-initdb.d
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
-    volumes:
-      - mongo-controller-data:/data/db
+    networks:
+      - mongo-net
 
   redis:
     image: redis:latest
@@ -129,6 +185,16 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
       - ME_CONFIG_MONGODB_SERVER=mongo-controller
+
+  mongo-controller:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - mongo-controller-data:/data/db
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -221,3 +287,13 @@ volumes:
     driver: local
   redis_data:
     driver: local
+  configsvr1:
+  configsvr2:
+  configsvr3:
+  shard1-1:
+  shard1-2:
+  shard1-3:
+
+networks:
+  mongo-net:
+    driver: bridge
